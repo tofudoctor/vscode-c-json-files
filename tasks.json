@@ -1,33 +1,41 @@
 {
-	"version": "2.0.0", 
-	"tasks": 
-	[ 
-		{ 
-			"label": "Compile", // 任務名稱，與launch.json的preLaunchTask相對應 
-			"command": "clang", // 要使用的編譯器，C++用clang++；如果編譯失敗，改成gcc或g++試試，還有問題那就是你自己的代碼有錯誤 
-			"args": [ 
-				"${file}", "-o", // 指定輸出文件名，不加該參數則默認輸出a.exe，Linux下默認a.out 
-				"${fileDirname}/${fileBasenameNoExtension}.exe", 
-				"-g", // 生成和調試有關的信息 
-				//"-Wall", // 開啟額外警告 
-				"-static-libgcc", // 靜態連結libgcc 
-				"--target=x86_64-w64-mingw", // clang的默認target為msvc，不加這一條就會找不到頭文件；Linux下去掉這一條 
-				"-std=c11" // C++最新標準為c++17，或根據自己的需要進行修改 
-			], // 編譯命令參數 
-				"type": "process", // process是vsc把預定義變量和轉義解析後直接全部傳給command；shell相當於先打開shell再輸入命令，所以args還會經過shell再解析一遍 
-				"group": 
-				{ 
-					"kind": "build", 
-					"isDefault": true // 設為false可做到一個tasks.json配置多個編譯指令，需要自己修改本文件，我這裡不多提 
-				}, 
-				"presentation": 
-				{ 
-					"echo": true, 
-					"reveal": "always", // 在「終端」中顯示編譯信息的策略，可以為always，silent，never。具體參見VSC的文檔 
-					"focus": false, // 設為true後可以使執行task時焦點聚集在終端，但對編譯c和c++來說，設為true沒有意義 
-					"panel": "shared" // 不同的文件的編譯信息共享一個終端面板 
-				} 
-				// "problemMatcher":"$gcc" // 如果你不使用clang，去掉前面的注釋符，並在上一條之後加個逗號。照著我的教程做的不需要改（也可以把這行刪去) 
-		} 
-	] 
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc.exe 建置使用中檔案",
+			"command": "C:/LLVM/bin/gcc.exe",
+			"args": [
+				"-g3",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe"
+			],
+			"options": {
+				"cwd": "C:/LLVM/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "編譯器: C:/LLVM/bin/gcc.exe"
+		},
+		{
+			"type": "shell",
+			"label": "Run c program: gcc.exe",
+			"command": "C:/LLVM/bin/gcc.exe -g3 -Wall \"${file}\" -o \"${fileDirname}\\${fileBasenameNoExtension}.exe\" ;\"${fileDirname}\\${fileBasenameNoExtension}.exe\"",
+			"options": {
+				"cwd": "C:/LLVM/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"detail": "編譯器: C:/LLVM/bin/gcc.exe",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
 }
